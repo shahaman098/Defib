@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defib — Autonomous Quorum Rescue Demo App</title>
+    <!-- Google Fonts: Outfit (Sans-serif) and JetBrains Mono (Terminal font) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Stars Background for Space Effect -->
+    <div class="stars-bg"></div>
+    <div class="glowing-orb orb-1"></div>
+    <div class="glowing-orb orb-2"></div>
+
+    <div class="app-container">
+        
+        <!-- ================= HERO HEADER ================= -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="pulse-ring">
+                    <svg class="heartbeat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <h1 class="logo-text">DEFIB</h1>
+            </div>
+            <p class="tagline">Autonomous Quorum Rescue for DAOs</p>
+            <p class="description">
+                Defib monitors proposal health on-chain. When it detects an active DAO vote critically at risk of failing quorum, it autonomously triggers targeted incentives and commits a cryptographic <em>Proof of Reasoning</em> receipt to the blockchain.
+            </p>
+            <div class="badge-row">
+                <span class="chain-badge">
+                    <span class="pulse-dot-green"></span> Somnia Testnet Compatible
+                </span>
+                <span class="status-badge-top">MVP v1.0.0</span>
+            </div>
+        </header>
+
+        <!-- ================= MAIN DASHBOARD GRID ================= -->
+        <main class="dashboard-grid">
+            
+            <!-- LEFT PANEL: GOVERNANCE STATE -->
+            <section class="dashboard-panel" id="panel-governance">
+                <div class="panel-header">
+                    <h2>Live Governance Monitor</h2>
+                    <span class="panel-tag">MockDAO.sol</span>
+                </div>
+
+                <!-- Proposal Card -->
+                <div class="proposal-card active-danger" id="proposal-card-42">
+                    <div class="card-top">
+                        <span class="prop-id">PROPOSAL #42</span>
+                        <span class="status-indicator critical" id="prop-status-indicator">CRITICAL RISK</span>
+                    </div>
+                    <h3 class="prop-title">Upgrade Treasury Allocation to AI Autonomous Liquidity Pools</h3>
+                    <p class="prop-desc">Reallocates 15% of idle DAO reserve assets into autonomous liquidity-providing agents to yield-farm and optimize token stability.</p>
+
+                    <!-- Quorum Progress Meter -->
+                    <div class="quorum-progress-section">
+                        <div class="quorum-labels">
+                            <span class="quorum-label">Current Participation</span>
+                            <span class="quorum-value" id="current-participation-value">16%</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="participation-progress-bar" style="width: 16%;"></div>
+                            <div class="quorum-marker" style="left: 20%;" title="Required Quorum: 20%">
+                                <span class="marker-tag">Required Quorum (20%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Telemetry Details Grid -->
+                    <div class="telemetry-grid">
+                        <div class="telemetry-item">
+                            <span class="tel-label">Required Quorum</span>
+                            <span class="tel-value">20.0%</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="tel-label">Time Remaining</span>
+                            <span class="tel-value tel-time warning-pulse" id="time-remaining-value">60 mins</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="tel-label">Bounty Status</span>
+                            <span class="tel-value badge-inactive" id="bounty-status-value">INACTIVE</span>
+                        </div>
+                        <div class="telemetry-item">
+                            <span class="tel-label">On-chain Audit</span>
+                            <span class="tel-value badge-inactive" id="audit-status-value">UNRECORDED</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT PANEL: CONTROL & AGENT ACTIVITY -->
+            <section class="dashboard-panel" id="panel-control">
+                <div class="panel-header">
+                    <h2>Autonomous Control Center</h2>
+                    <span class="panel-tag">DefibCore.sol</span>
+                </div>
+
+                <div class="control-box">
+                    <p class="control-hint">Act as the autonomous keeper. Run the evaluation loops on-chain to detect quorum risk and initiate the rescue campaign.</p>
+                    
+                    <button class="btn btn-primary" id="btn-run-rescue">
+                        <span class="btn-text">Run Defib Rescue</span>
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Terminal logs -->
+                <div class="terminal-container">
+                    <div class="terminal-header">
+                        <div class="terminal-dots">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                        <span class="terminal-title">DEFIB AGENT RUNTIME LOGS</span>
+                    </div>
+                    <div class="terminal-body" id="agent-terminal-logs">
+                        <div class="log-line text-muted">&gt; System initialized. Awaiting quorum evaluation trigger...</div>
+                        <div class="log-line text-muted">&gt; Standing by (MockDAO connection stable)...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ================= PROOF OF REASONING RECEIPT ================= -->
+        <section class="receipt-section hidden" id="receipt-card-section">
+            <div class="panel-header">
+                <h2>On-chain Proof of Reasoning Receipt</h2>
+                <span class="panel-tag success">COMMIT SECURE</span>
+            </div>
+            
+            <div class="receipt-card">
+                <div class="receipt-watermark">VERIFIED</div>
+                <div class="receipt-header">
+                    <div class="receipt-logo">
+                        <svg class="verified-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        <h3>ProofOfReasoning Receipt</h3>
+                    </div>
+                    <div class="receipt-status">
+                        <span class="verified-badge">ON-CHAIN COMMITTED</span>
+                    </div>
+                </div>
+                
+                <div class="receipt-grid">
+                    <div class="receipt-item">
+                        <span class="r-label">Proposal ID</span>
+                        <span class="r-value">#42</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="r-label">Initial Participation</span>
+                        <span class="r-value">16.0%</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="r-label">Required Quorum</span>
+                        <span class="r-value">20.0%</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="r-label">Time Remaining</span>
+                        <span class="r-value">3600 seconds (60 mins)</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="r-label">Computed Risk Score</span>
+                        <span class="r-value highlight-red">92 / 100</span>
+                    </div>
+                    <div class="receipt-item">
+                        <span class="r-label">Bounty Reward Allocation</span>
+                        <span class="r-value highlight-green">100.0 DFIB</span>
+                    </div>
+                    <div class="receipt-item full-width">
+                        <span class="r-label">Action Triggered</span>
+                        <span class="r-value">Activate targeted voting incentive (BountyVault.sol)</span>
+                    </div>
+                    <div class="receipt-item full-width">
+                        <span class="r-label">Reasoning SHA256 Hash</span>
+                        <span class="r-value hash-code" id="receipt-hash">0xdefib42a9c8e1e7d23df92ff01e89ad922ef01e8a09bc3049b76cde38a902bcf</span>
+                    </div>
+                    <div class="receipt-item full-width">
+                        <span class="r-label">Timestamp</span>
+                        <span class="r-value" id="receipt-timestamp">2026-05-27 23:39:41 UTC</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SYSTEM ARCHITECTURE MAPPING ================= -->
+        <section class="architecture-section">
+            <div class="panel-header">
+                <h2>Technical System Architecture</h2>
+                <span class="panel-tag">Core Contracts Flow</span>
+            </div>
+            
+            <div class="architecture-diagram">
+                <!-- Node 1 -->
+                <div class="arch-node active" id="arch-node-dao">
+                    <div class="node-icon">🗳️</div>
+                    <h4>MockDAO.sol</h4>
+                    <p>Tracks proposals, checks deadlines & voting quorum.</p>
+                </div>
+                <!-- Line 1 -->
+                <div class="arch-flow-arrow" id="flow-arrow-1">
+                    <div class="flow-dot"></div>
+                </div>
+                <!-- Node 2 -->
+                <div class="arch-node" id="arch-node-core">
+                    <div class="node-icon">🤖</div>
+                    <h4>DefibCore.sol</h4>
+                    <p>On-chain evaluation logic & cryptographic receipts.</p>
+                </div>
+                <!-- Line 2 -->
+                <div class="arch-flow-arrow" id="flow-arrow-2">
+                    <div class="flow-dot"></div>
+                </div>
+                <!-- Node 3 -->
+                <div class="arch-node" id="arch-node-vault">
+                    <div class="node-icon">💼</div>
+                    <h4>BountyVault.sol</h4>
+                    <p>Secures reward pools & processes voter claims.</p>
+                </div>
+                <!-- Line 3 -->
+                <div class="arch-flow-arrow" id="flow-arrow-3">
+                    <div class="flow-dot"></div>
+                </div>
+                <!-- Node 4 -->
+                <div class="arch-node" id="arch-node-token">
+                    <div class="node-icon">🪙</div>
+                    <h4>MockToken.sol</h4>
+                    <p>Incentive utility token (DFIB) disbursed to voters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTROL DECK (RESET / DETAILS) ================= -->
+        <footer class="control-deck">
+            <div class="registry-table-container">
+                <table class="registry-table">
+                    <thead>
+                        <tr>
+                            <th>Smart Contract File</th>
+                            <th>Target Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code class="code-badge">MockDAO.sol</code></td>
+                            <td>Governance Proposal & Simulation Store</td>
+                            <td><span class="status-cell verified">Compiled & Tested</span></td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-badge">DefibCore.sol</code></td>
+                            <td>Quorum Risk Calculator & Orchestrator</td>
+                            <td><span class="status-cell verified">Compiled & Tested</span></td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-badge">BountyVault.sol</code></td>
+                            <td>Incentive Reward Custodian & Payout</td>
+                            <td><span class="status-cell verified">Compiled & Tested</span></td>
+                        </tr>
+                        <tr>
+                            <td><code class="code-badge">MockToken.sol</code></td>
+                            <td>DFIB Utility ERC20 Token</td>
+                            <td><span class="status-cell verified">Compiled & Tested</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="reset-area">
+                <button class="btn btn-secondary hidden" id="btn-reset-demo">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="btn-icon-left">
+                        <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                    </svg>
+                    <span>Reset Simulation</span>
+                </button>
+            </div>
+            
+            <p class="copyright">&copy; 2026 Defib Autonomous Quorum Rescue. All rights reserved. Somnia Agentathon MVP.</p>
+        </footer>
+
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

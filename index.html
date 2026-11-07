@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Defib — Autonomous Quorum Rescue Agent</title>
+    <meta
+      name="description"
+      content="Defib monitors DAO proposals, evaluates quorum risk, triggers voting incentives, and records auditable Proof of Reasoning receipts."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container">
+        <div class="badge">Defib</div>
+        <h1>Autonomous Quorum Rescue Agent for DAOs</h1>
+        <p class="lede">
+          Monitors governance proposals, evaluates quorum risk on-chain, triggers targeted voting
+          incentives, and emits auditable <em>Proof of Reasoning</em> receipts.
+        </p>
+        <div class="cta-row">
+          <a class="button primary" href="#quickstart">Run the demo</a>
+          <a class="button" href="#architecture">Architecture</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <section class="section">
+        <div class="container grid">
+          <div class="card">
+            <h2>The problem</h2>
+            <p>
+              DAO proposals often fail quorum due to apathy and coordination delays near deadlines,
+              not because of active opposition. By the time humans react, it’s too late.
+            </p>
+          </div>
+          <div class="card">
+            <h2>The solution</h2>
+            <p>
+              Defib continuously monitors proposal state, computes a risk score, deposits incentives
+              when proposals are critically at risk, and records a receipt for auditability.
+            </p>
+          </div>
+          <div class="card">
+            <h2>What’s on-chain</h2>
+            <ul>
+              <li><code>DefibCore.sol</code> — risk math + proof receipts</li>
+              <li><code>BountyVault.sol</code> — holds/dispenses incentives</li>
+              <li><code>MockDAO.sol</code> — governance simulation harness</li>
+              <li><code>MockToken.sol</code> — incentive token (DFIB)</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="architecture" class="section">
+        <div class="container">
+          <h2>Architecture</h2>
+          <div class="card mono">
+            <pre><code>TypeScript Agent / CLI
+        │ evaluates
+        ▼
+    DefibCore.sol ── signals ──► BountyVault.sol ──► voters claim
+        │ funds
+        ▼
+    MockToken (DFIB)</code></pre>
+          </div>
+          <p class="subtle">
+            For details, see <code>README.md</code> in the repository.
+          </p>
+        </div>
+      </section>
+
+      <section id="quickstart" class="section">
+        <div class="container">
+          <h2>Quickstart</h2>
+          <div class="card">
+            <p>Install deps and run the end-to-end demo:</p>
+            <pre class="code"><code>npm install --legacy-peer-deps
+npx hardhat run scripts/demo.ts</code></pre>
+            <p>Run tests:</p>
+            <pre class="code"><code>npx hardhat test</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          Built with Solidity, Hardhat, TypeScript, and Ethers.js.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
+

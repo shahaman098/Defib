@@ -93,6 +93,25 @@ Defib is designed specifically to leverage the unique advantages of the **Somnia
 
 ---
 
+## 🖥️ Interactive Demo Web App
+
+For hackathon presentations and judges, Defib features a gorgeous **interactive single-page web application** under `/frontend` designed with Web3 dark mode and glassmorphism. It allows you to simulate the entire autonomous rescue campaign, watch real-time log outputs in a developer terminal, and review on-chain Proof of Reasoning receipts.
+
+### Key Features:
+* **Interactive Governance Board**: Shows Proposal #42 with live participation status and glowing critical indicators.
+* **Autonomous Controller**: Click "Run Defib Rescue" to watch the agent analyze risk, lock in the reward tokens, log reasoning hashes, and simulate voter updates.
+* **Proof of Reasoning Receipt**: Displays verified cryptographic receipt telemetry (risk scores, hashes, and dynamic timestamps) when the rescue completes.
+* **Technical Architecture Map**: Provides a live visual flowchart highlighting active contracts during the execution process.
+
+### How to Run:
+You can run it instantly on your local computer by opening the HTML file in any browser:
+* Double-click [index.html](file:///Users/efi/Music/Kris%202/Defib/frontend/index.html) or run in your shell:
+  ```bash
+  open frontend/index.html
+  ```
+
+---
+
 ## 🚀 Running the Demo
 
 Defib includes a fully automated end-to-end simulation script that showcases:
